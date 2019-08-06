@@ -1,196 +1,343 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<title>Examples</title>
-<!-- css -->
-<style type="text/css">
-    * {
-        margin: 0;
-        padding: 0;
-    }
-    html {
-        overflow: hidden;
-    }
-    body {
-        background: url(images/bg.png) no-repeat;
-        background: cover;
-        font-size: 12px;
-    }
-    img{
-        display: none;
-    }
-    #test {
-        width: 400px;
-        position: absolute;
-        top:216px;
-        left: 216px;
-        text-indent: 2em;
-        text-align:justify;
-     }
-    .imgBox {
-      position: absolute;
-      z-index: 520;
-      transform: rotate(45deg);
-      left: 10px;
-      display:block;
-    }
-    .box {
-      width: 100px;
-      height: 100px;
-      background: pink;
-      transform: rotate(-45deg);
-      position: absolute;
-      top: 200px;
-      right: 100px;
-      display: none;
-    }
-    .box:before {
-      content: "";
-      width: 100px;
-      height: 100px;
-      background: pink;
-      display: block;
-      border-radius: 50%;
-      position: absolute;  /*绝对定位*/
-      top: -50px;
-      left: 0;
-    }
-
-    .box:after {
-      content: "";
-      width: 100px;
-      height: 100px;
-      background: pink;
-      display: block;
-      border-radius: 50%;
-      position: absolute;  /*绝对定位*/
-      top: 0;
-      left: 50px;
-    }
-
-    @-webkit-keyframes ide {
-      0% {
-        -webkit-transform: scale(1) rotate(-45deg);
-      }
-
-      50% {
-          -webkit-transform: scale(1.5) rotate(-45deg);
-      }
-      100% {
-          -webkit-transform: scale(1) rotate(-45deg);
-      }
-    }
-
-    .scale {
-      -webkit-animation: ide 1.2s linear infinite;
-    }
-    .imgLove {
-      position: absolute;
-      left: 150px;
-      top: 150px;
-    }
-</style>
-</head>
-<body>
-
-    <img class="img" src="images/love.png" height="41" width="45" alt=""/>
-    <img class="img imgLove" src="images/love.gif" width="100" height="100"/>
-    <div id="test"></div>
-    <div class="box scale" id="box">
-      <img class="imgBox" src="images/1.gif" alt="">
-    </div>
-    <audio src="music/2.mp3" autoplay></audio>
-    <canvas id="myCanvas"></canvas>
-    <script type="text/javascript">
-        var arr = [],   //保存所有的XY坐标，只为验证。实际程序中可删除。
-            r = 22,     //控制爱心的大小
-            radian,     //弧度
-            i = 0,
-            radianDecrement,//弧度增量
-            time = 60,//每个点之间的时间间隔
-            timer,
-            num = 60,//分割为 60 个点
-            startRadian = Math.PI,
-            canvas,
-            ctx,
-            w,
-            h,
-            imgs = document.getElementsByClassName("img");
-        window.onload = function () {
-            startAnimation();
-        }
-        // 部署绘画环境
-        function startAnimation() {
-            canvas = document.getElementById("myCanvas")
-            ctx = canvas.getContext("2d");
-            // 获取可视范围
-            w = window.innerWidth;
-            h = window.innerHeight;
-            // 动态添加canvas 的宽度、高度
-            canvas.width = w;
-            canvas.height = h;
-            drawHeart();
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Examples</title>
+    <!-- css -->
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
         }
 
-        // 定义鲜花的初始点
-        function drawHeart() {
-            radian = startRadian;//弧度设为初始弧度
-            radianDecrement = Math.PI / num * 2;
-            ctx.drawImage(imgs[0],getX(radian),getY(radian));
-            timer = setInterval(printHeart,time);
+        html {
+            overflow: hidden;
         }
 
-        // 变化鲜花的拼接坐标
-        function printHeart() {
-            radian += radianDecrement;
-            ctx.drawImage(imgs[0],getX(radian),getY(radian));
-            i++;
-            if (i >= num) {    //边界判断
-                // 清除定时器
-                clearInterval(timer);
-                imgs[1].style.display="block";
-                start();
+        body {
+            background: cover;
+            font-size: 12px;
+        }
+
+        img {
+            display: none;
+        }
+
+        #test {
+            width: 400px;
+            position: absolute;
+            top: 216px;
+            left: 216px;
+            text-indent: 2em;
+            text-align: justify;
+        }
+
+        .imgBox {
+            position: absolute;
+            z-index: 520;
+            transform: rotate(45deg);
+            left: 10px;
+            display: block;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background: pink;
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 200px;
+            right: 100px;
+            display: none;
+        }
+
+        .box:before {
+            content: "";
+            width: 100px;
+            height: 100px;
+            background: pink;
+            display: block;
+            border-radius: 50%;
+            position: absolute;
+            /*绝对定位*/
+            top: -50px;
+            left: 0;
+        }
+
+        .box:after {
+            content: "";
+            width: 100px;
+            height: 100px;
+            background: pink;
+            display: block;
+            border-radius: 50%;
+            position: absolute;
+            /*绝对定位*/
+            top: 0;
+            left: 50px;
+        }
+
+        @-webkit-keyframes ide {
+            0% {
+                -webkit-transform: scale(1) rotate(-45deg);
+            }
+
+            50% {
+                -webkit-transform: scale(1.5) rotate(-45deg);
+            }
+
+            100% {
+                -webkit-transform: scale(1) rotate(-45deg);
             }
         }
-        //由弧度得到 X 坐标
-        function getX(t) {
-            return 360 + r * (16 * Math.pow(Math.sin(t), 3));
+
+        .scale {
+            -webkit-animation: ide 1.2s linear infinite;
         }
 
-        //由弧度得到 Y 坐标
-        function getY(t) {
-            return 280 - r * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        .imgLove {
+            position: absolute;
+            left: 150px;
+            top: 150px;
         }
-        //  打印机
-       function start() {
-           // 获取 div 的 dom
-           var testDom = document.getElementById("test");
-           // 创建数组
-           var arr = [];
-           var str = "我就是那个普通话不标准黄金身高1.70m的的骗花狂魔Ide老师！";
-           arr.push(str);
-           arr.push("");
-           arr.push("");
-           var newStr = arr.join("");
-           // alert(typeof newStr);
-           var newArr = newStr.split("");
-           var timer = null;
-           var i = 0;
-           timer = setInterval(function() {
-               // 判断边界
-               if (i == newStr.length) {
-                   clearInterval(timer);
-                   document.getElementById("box").style.display = "block";
-               } else {
-                   // 打印出下标中的值并 += 拼接起来
-                   testDom.innerHTML += "<b style='letter-spacing:2px;color:red;line-height:30px;'>" + newArr[i] + "</b>";
-                   i++;
-               }
-           }, 100); // 1秒等于 1000毫秒
-       }
+
+        #canvas-club {
+            height: 800px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img class="img" src="images/love.png" height="41" width="45" alt="" />
+    <img class="img imgLove" src="images/love.gif" width="100" height="100" />
+    <div id="test"></div>
+    <div class="box scale" id="box">
+        <img class="imgBox" src="images/1.gif" alt="">
+    </div>
+
+    <canvas id="canvas-club"></canvas>
+    <canvas id="myCanvas"></canvas>
+
+    <script type="text/javascript">
+
+        ; (function () {
+
+            //获取canvas对象
+            var c = document.getElementById("canvas-club");
+            //获取绘画环境
+            var ctx = c.getContext("2d");
+            //设置画布大小
+            var w = c.width = window.innerWidth;
+            var h = c.height = window.innerHeight;
+            // 设置渐变色
+            var clearColor = 'rgba(0, 0, 0, .1)';
+            //设置雨滴初始值
+            var max = 30;
+            //定义数组存放雨水
+            var drops = [];
+
+
+            //定义随机函数
+            function random(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+            //定义构造函数
+            function O() { };
+            //设置函数原型
+            O.prototype = {
+                //设置变量
+                init: function () {
+                    this.x = random(0, w); //出现坐标x
+                    this.y = 0;//出现坐标y
+                    this.color = 'hsl(180, 100%, 50%)';//颜色
+                    this.w = 2;//椭圆的初始宽度
+                    this.h = 1;//椭圆的初始高度
+                    this.vy = random(4, 5);//雨滴速度
+                    this.vw = 3;//椭圆的扩散速度
+                    this.vh = 1;//椭圆的扩散速度
+                    this.size = 2; //雨滴宽度
+                    this.hit = random(h * .8, h * .9);//雨滴下落最大宽度
+                    this.a = 1;//透明度
+                    this.va = .96;//透明度的渐变度
+                },
+                draw: function () {
+                    //如果雨滴的坐标达到y，画圆圈。
+                    if (this.y > this.hit) {
+                        ctx.beginPath();//开始绘画
+                        ctx.moveTo(this.x, this.y - this.h / 2);//绘画起点
+                        //贝赛尔曲线画上半圆，下半圆（我看不懂）
+                        ctx.bezierCurveTo(
+                            this.x + this.w / 2, this.y - this.h / 2,
+                            this.x + this.w / 2, this.y + this.h / 2,
+                            this.x, this.y + this.h / 2);
+
+                        ctx.bezierCurveTo(
+                            this.x - this.w / 2, this.y + this.h / 2,
+                            this.x - this.w / 2, this.y - this.h / 2,
+                            this.x, this.y - this.h / 2);
+                        //上色
+                        ctx.strokeStyle = 'hsla(180, 100%, 50%, ' + this.a + ')';
+                        ctx.stroke();
+                        //关闭路径
+                        ctx.closePath();
+
+                    } else {
+                        //雨滴画矩形
+                        ctx.fillStyle = this.color;
+                        ctx.fillRect(this.x, this.y, this.size, this.size * 5);
+                    }
+                    this.update();
+                },
+                //更新方法
+                update: function () {
+
+                    if (this.y < this.hit) { //雨滴下落过程中，改变y的坐标
+                        this.y += this.vy;
+                    } else {
+                        if (this.a > .03) { //雨滴下落之后，透明度大于0.03时
+                            this.w += this.vw; //改变椭圆的宽度
+                            this.h += this.vh; //改变椭圆的高度
+                            if (this.w > 100) { //椭圆的宽度达到100时
+                                this.a *= this.va; //透明度变浅，直到0.03
+                                this.vw *= .98;//椭圆宽度速度变化
+                                this.vh *= .98;//椭圆高度速度变化
+                            }
+                        } else { //雨滴下落之后，透明度小于0.03时，恢复初始值
+                            this.init();
+                        }
+                    }
+
+                }
+            }
+            // 窗口改变
+            function resize() {
+                w = c.width = window.innerWidth;
+                h = c.height = window.innerHeight;
+            }
+            //初始化数组，不同时间（j*200）存放入数组中
+            function setup() {
+                for (var i = 0; i < max; i++) {
+                    (function (j) {
+                        setTimeout(function () {
+                            var o = new O();
+                            o.init();
+                            drops.push(o);
+                        }, j * 200)
+                    }(i));
+                }
+            }
+
+            //调用数组中的原型方法
+            function anim() {
+                ctx.fillStyle = clearColor;
+                ctx.fillRect(0, 0, w, h);
+                for (var i in drops) {
+                    drops[i].draw();
+                }
+                requestAnimationFrame(anim);
+            }
+
+
+            window.addEventListener("load", resize);
+
+            setup();
+            anim();
+        })()
+
+            ; (function () {
+                var
+                    r = 22,     //控制爱心的大小
+                    radian,     //弧度
+                    i = 0,
+                    radianDecrement,//弧度增量
+                    time = 60,//每个点之间的时间间隔
+                    timer,
+                    num = 60,//分割为 60 个点
+                    startRadian = Math.PI,
+                    canvas,
+                    ctx,
+                    w,
+                    h,
+                    imgs = document.getElementsByClassName("img");
+                window.onload = function () {
+                    startAnimation();
+                }
+                // 部署绘画环境
+                function startAnimation() {
+                    canvas = document.getElementById("myCanvas")
+                    ctx = canvas.getContext("2d");
+                    // 获取可视范围
+                    w = window.innerWidth;
+                    h = window.innerHeight;
+                    // 动态添加canvas 的宽度、高度
+                    canvas.width = w;
+                    canvas.height = h;
+                    drawHeart();
+                }
+
+                // 定义鲜花的初始点
+                function drawHeart() {
+                    radian = startRadian;//弧度设为初始弧度
+                    radianDecrement = Math.PI / num * 2;
+                    ctx.drawImage(imgs[0], getX(radian), getY(radian));
+                    timer = setInterval(printHeart, time);
+                }
+
+                // 变化鲜花的拼接坐标
+                function printHeart() {
+                    radian += radianDecrement;
+                    ctx.drawImage(imgs[0], getX(radian), getY(radian));
+                    i++;
+                    if (i >= num) {    //边界判断
+                        // 清除定时器
+                        clearInterval(timer);
+                        imgs[1].style.display = "block";
+                        start();
+                    }
+                }
+                //由弧度得到 X 坐标
+                function getX(t) {
+                    return 360 + r * (16 * Math.pow(Math.sin(t), 3));
+                }
+
+                //由弧度得到 Y 坐标
+                function getY(t) {
+                    return 280 - r * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+                }
+                //  打印机
+                function start() {
+                    // 获取 div 的 dom
+                    var testDom = document.getElementById("test");
+                    // 创建数组
+                    var arr = ["我就是那个普通话不标准黄金身高1.70m的的骗花狂魔fly老师！"];
+                    var newStr = arr.join("");
+                    var newArr = newStr.split("");
+                    var timer = null;
+                    var i = 0;
+                    timer = setInterval(function () {
+                        // 判断边界
+                        if (i == newStr.length) {
+                            clearInterval(timer);
+                            document.getElementById("box").style.display = "block";
+                        } else {
+                            testDom.innerHTML += "<b style='letter-spacing:2px;color:red;line-height:30px;'>" + newArr[i] + "</b>";
+                            i++;
+                        }
+                    }, 100);
+                }
+
+            })()
+
     </script>
 </body>
+
 </html>
